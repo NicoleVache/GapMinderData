@@ -1,6 +1,7 @@
 LIBNAME mydata "/courses/d1406ae5ba27fe300 " access=readonly;
 DATA new; set mydata.gapminder;
 
+/*data management for incomeperperson*/
 IF incomeperperson eq . THEN incomegroup=.;
 ELSE IF incomeperperson LE 744.239 THEN incomegroup=1;
 ELSE IF incomeperperson LE 2553.496 THEN incomegroup=2;
