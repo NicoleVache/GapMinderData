@@ -14,7 +14,7 @@ PROC FREQ; tables suiciderate polityscore;
 
 PROC GCHART; VBAR polityscore/discrete TYPE=PCT WIDTH=10;
 
-PROC GCHART; VBAR suiciderate/discrete TYPE =PCT WIDTH-30;
+PROC GCHART; VBAR suiciderate/discrete TYPE=PCT WIDTH=30;
 
 PROC UNIVARIATE; VAR polityscore suicideper100th;
 
