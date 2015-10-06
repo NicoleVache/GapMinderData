@@ -1,8 +1,18 @@
 LIBNAME mydata "/courses/d1406ae5ba27fe300 " access=readonly;
 DATA new; set mydata.gapminder;
-PROC SORT; country;
+
+IF incomeperperson eq . THEN incomegroup=.;
+ELSE IF incomeperperson LE 744.239 THEN incomegroup=1;
+ELSE IF incomeperperson LE 2553.496 THEN incomegroup=2;
+ELSE IF incomeperperson LE 9425.326 THEN incomegroup=3;
+ELSE IF incomeperperson GT 20901.858 THEN incomegroup=4;
+
 PROC PRINT; VAR country suicideper100th incomeperperson;
-PROC FREQ; TABLES country suicideper100th incomeperperson;
+
+PROC FREQ; TABLES incomegroup;
+
 PROC UNIVARIATE; VAR suicideper100th incomeperperson;
-PROC GPLOT; PLOT incomeperperson*suicideper100th;
+
+PROC GCHART; VBAR incomegroup/discrete TYPE=mean SUMVAR=suicideper100th;
+
 RUN;
