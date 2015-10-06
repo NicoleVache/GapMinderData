@@ -4,5 +4,5 @@ PROC SORT; country;
 PROC PRINT; VAR country suicideper100th incomeperperson;
 PROC FREQ; TABLES country suicideper100th incomeperperson;
 PROC UNIVARIATE; VAR suicideper100th incomeperperson;
-PROC GPLOT; PLOT incomperperson*suicideper100th;
+PROC GPLOT; PLOT incomeperperson*suicideper100th;
 RUN;
