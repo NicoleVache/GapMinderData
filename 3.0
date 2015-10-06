@@ -1,9 +1,20 @@
 LIBNAME mydata "/courses/d1406ae5ba27fe300 " access=readonly;
 DATA new; set mydata.gapminder;
 
+/*data management for suiciderate*/
+IF suicideper100th eq . THEN suiciderate=.;
+ELSE IF suiciderate LE 4.983422 THEN suiciderate=1;
+ELSE IF suiciderate LE 8.262893 THEN suiciderate=2;
+ELSE IF suiciderate LE 12.367980 THEN suiciderate=3;
+ELSE IF suiciderate GT 16.959240 THEN suiciderate=4;
+
 PROC PRINT; VAR country polityscore suicideper100th;
 
-PROC FREQ; tables polityscore suicideper100th;
+PROC FREQ; tables suiciderate polityscore;
+
+PROC GCHART; VBAR polityscore/discrete TYPE=PCT WIDTH=10;
+
+PROC GCHART; VBAR suiciderate/discrete TYPE =PCT WIDTH-30;
 
 PROC UNIVARIATE; VAR polityscore suicideper100th;
 
