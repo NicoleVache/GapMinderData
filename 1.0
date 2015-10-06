@@ -1,0 +1,18 @@
+LIBNAME mydata "/courses/d1406ae5ba27fe300 " access=readonly;
+DATA new; set mydata.gapminder;
+IF polityscore LE 0 THEN polityscore=99; /*N/A*/ 
+IF SUICIDEPER100TH LE 0 THEN SUICIDERATEGROUP=0; /*N/A*/
+ELSE IF SUICIDEPER100TH LE 4.9610714912 THEN SUICIDERATEGROUP=1; /*low 25th percentile*/
+ELSE IF SUICIDEPER100TH LE 8.2110671997 THEN SUICIDERATEGROUP=2; /*50th percentile*/
+ELSE IF SUICIDEPER100TH LE 12.289121628 THEN SUICIDERATEGROUP=3; /*75th percentile*/
+ELSE SUICIDERATEGROUP=4; /*top 25th percentile*/ 
+IF incomeperperson = . THEN INCOMEPERPERSONGROUP=0; /*N/A*/
+ELSE IF incomeperperson LE 736.2680538 THEN INCOMEPERPERSONGROUP=1; /*low 25th percentile*/
+ELSE IF incomeperperson LE 2535.00038 THEN INCOMEPERPERSONGROUP=2; /*50th percentile*/
+ELSE IF incomeperperson LE 9243.5870526 THEN INCOMEPERPERSONGROUP=3; /* 75th percentile*/
+ELSE INCOMEPERPERSONGROUP=4; /*top 25th percentile*/
+PROC SORT; COUNTRY
+PROC PRINT; VAR  polityscore suiciderategroup incomeperpersongroup;
+PROC FREQ; TABLES polityscore suicideper100th incomeperperson suiciderategroup incomeperpersongroup;
+PROC GCHART; VAR polityscore/discrete TYPE=mean SUMVAR=suicideper100th
+RUN;
