@@ -1,0 +1,50 @@
+LIBNAME mydata "/courses/d1406ae5ba27fe300 " access=readonly;
+DATA new; set mydata.gapminder;
+
+/*data management for suiciderate*/
+IF suicideper100th eq . THEN suiciderate=.;
+ELSE IF suicideper100th LE 4.983422 THEN suiciderate=1;
+ELSE IF suicideper100th LE 8.262893 THEN suiciderate=2;
+ELSE IF suicideper100th LE 12.367980 THEN suiciderate=3;
+ELSE IF suicideper100th GT 16.959240 THEN suiciderate=4;
+
+/*data management for polityscore 1=autocracies, 2=anocracies 3=democracies*/
+IF polityscore eq . THEN politygroup=.;
+ELSE IF polityscore LE -5 THEN politygroup=1;
+ELSE IF polityscore LE 6 THEN politygroup=2;
+ELSE IF polityscore LE 10 THEN politygroup=3;
+
+
+PROC PRINT; VAR country polityscore suicideper100th suiciderate politygroup incomeperperson lifeexpectancy alcconsumption urbanrate employrate hivrate co2emissions armedforcesrate breastcancerper100th femaleemployrate internetuserate oilperperson relectricperperson;
+
+PROC FREQ; TABLES suiciderate*politygroup/CHISQ;
+
+PROC UNIVARIATE; VAR politygroup suicideper100th;
+
+PROC GPLOT; PLOT suicideper100th*polityscore;
+
+PROC GPLOT; PLOT breastcancerper100th*polityscore;
+
+PROC GPLOT; PLOT breastcancerper100th*incomeperperson;
+
+PROC GPLOT; PLOT breastcancerper100th*alcconsumption;
+
+PROC GPLOT; PLOT breastcancerper100th*urbanrate;
+
+PROC GPLOT; PLOT breastcancerper100th*employrate;
+
+PROC GPLOT; PLOT breastcancerper100th*hivrate;
+
+PROC GPLOT; PLOT breastcancerper100th*co2emissions;
+
+PROC GPLOT; PLOT breastcancerper100th*internetuserate;
+
+PROC GPLOT; PLOT breastcancerper100th*relectricperperson;
+
+PROC ANOVA; CLASS politygroup;
+MODEL suicideper100th=politygroup;
+MEANS politygroup/DUNCAN;
+
+PROC CORR; VAR polityscore suicideper100th incomeperperson lifeexpectancy alcconsumption urbanrate employrate hivrate co2emissions armedforcesrate breastcancerper100th femaleemployrate internetuserate oilperperson relectricperperson;
+
+RUN;
