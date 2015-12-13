@@ -1,12 +1,18 @@
 LIBNAME mydata "/courses/d1406ae5ba27fe300" access=readonly;
 DATA new; set mydata.gapminder;
-PROC PRINT; VAR country incomeperperson breastcancerper100th;
+PROC PRINT; VAR country incomeperperson breastcancerper100th urbanrate;
 PROC GPLOT; PLOT breastcancerper100th*incomeperperson;
 PROC SORT; BY country;
-PROC GLM; MODEL breastcancerper100th = incomeperperson;
+DATA new2; 
+SET NEW;
+urbanrate_c=urbanrate-56.7693596;
+incomeperperson_c=incomeperperson-8740.97;
 RUN;
-DATA new2; SET NEW;
-IF incomeperperson ne .;
-incomeperperson_c=incomeperperson-46505.62131;
+PROC MEANS;
+VAR urbanrate_c;
 RUN;
- 
+PROC MEANS;
+VAR incomeperperson_c;
+RUN;
+PROC GLM; MODEL breastcancerper100th = incomeperperson_c urbanrate_c/SOLUTION;
+RUN;
