@@ -1,0 +1,12 @@
+LIBNAME mydata "/courses/d1406ae5ba27fe300" access=readonly;
+DATA new; set mydata.gapminder;
+PROC PRINT; VAR country incomeperperson breastcancerper100th;
+PROC GPLOT; PLOT breastcancerper100th*incomeperperson;
+PROC SORT; BY country;
+PROC GLM; MODEL breastcancerper100th = incomeperperson;
+RUN;
+DATA new2; SET NEW;
+IF incomeperperson ne .;
+incomeperperson_c=incomeperperson-46505.62131;
+RUN;
+ 
